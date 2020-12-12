@@ -11,6 +11,7 @@ Used -
   2. To stream torrents Webtor.io is used 
   
 Frontend - Simple HTML, CSS and JS for DOM manupilations and calling api.
+
 Backend - Nodejs is used for implementing api
 
 
