@@ -1,0 +1,56 @@
+body {
+  font-family: serif;
+}
+.navbar-custom {
+  background-color: rgb(58, 59, 60);
+}
+
+.body-color {
+  background-color: rgb(58, 59, 60);
+}
+
+.error-font {
+  color: #ffffff;
+  font-size: 100px;
+  letter-spacing: 10px;
+}
+
+#products {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.3em;
+  font-weight: 600;
+}
+
+#player {
+  width: 50%;
+  height: 100%;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 100px;
+  max-width: 100%;
+}
+
+.modal {
+  padding: 0 !important;
+}
+.modal .modal-dialog {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  margin: 0;
+}
+.modal .modal-content {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+.modal .modal-body {
+  overflow-y: auto;
+}
