@@ -16,10 +16,7 @@ document.getElementById("search").addEventListener("submit", function (event) {
 async function getMagnet(torrent) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append(
-    "Cookie",
-    "__cfduid=d2c532f07812066813b819f91a034f1b01606676607"
-  );
+  
 
   var raw = JSON.stringify(torrent);
 
@@ -89,10 +86,7 @@ async function search(name) {
   magnetarr = [];
   var myHeaders = new Headers();
 
-  myHeaders.append(
-    "Cookie",
-    "__cfduid=d2c532f07812066813b819f91a034f1b01606676607"
-  );
+  
 
   var requestOptions = {
     method: "GET",
