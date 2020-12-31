@@ -1,6 +1,6 @@
 # Torrent-Stream-Player
 
-#[LIVE DEMO](https://stream-demo.netlify.app/)#
+#LIVE DEMO(https://stream-demo.netlify.app/)#
 
 **Functionality** -
   1. Extracts torrents info from popular torrents site 1337x and limetorrent.
