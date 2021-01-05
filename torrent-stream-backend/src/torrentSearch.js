@@ -4,7 +4,7 @@ async function searchTorrent(TorrentSearchApi, name, category) {
     ["1337x", "Limetorrents"],
     `${name}`,
     `${category}`,
-    6
+    20
   );
   return torrents;
 }
