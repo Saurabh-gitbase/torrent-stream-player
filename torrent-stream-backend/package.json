@@ -7,8 +7,9 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "express": "4.17.1",
-    "torrent-search-api": "2.1.3"
+    "express": "^4.17.1",
+    "suggestion": "^2.1.2",
+    "torrent-search-api": "^2.1.3"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
