@@ -5,75 +5,173 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Torrent Player</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="icon" href="https://i.ibb.co/j4vhL9p/magnet.png">
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script defer src='main.js'></script>
 </head>
 <body class="body-color">
-    <nav class="navbar navbar-expand-sm navbar-custom navbar-dark">
-        <img src="https://img.icons8.com/color/96/000000/pirate.png" class="navbar-brand" width="70" height="" onclick="homeScreen()"/>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-  
-        <div class="collapse navbar-collapse show" id="navbarSupportedContent">
-            <form class="form-inline my-2 my-lg-0 ml-auto" id="search" action="#" method="GET">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" autocomplete="off" id="searchval">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
+  <nav class="navbar navbar-expand-sm navbar-custom navbar-dark">
+    <img src="https://img.icons8.com/color/96/000000/pirate.png" class="navbar-brand" width="70" height="" onclick="homeScreen()"/>
+    <span class="navbar-brand" href="#">Torrent Player</span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="text-center mt-3 mb-5">
+    <div class="collapse navbar-collapse show" id="navbarSupportedContent">
+        <form class="form-inline my-2 my-lg-0 ml-auto" id="search" action="#" method="GET">
+            <input list="suggestions" class="form-control mr-sm-2 inputboxcss" type="search" placeholder="Enter Movie or Show Name" aria-label="Search" id="searchval" oninput="suggest(this.value)"  autocomplete="off">
+            <datalist id="suggestions">
+              <option value=""/>
+              <option value=""/>
+              <option value=""/>
+              <option value=""/>
+              <option value=""/>
+            </datalist>
+            <button class="btn btn-outline-success my-2  mx-md-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
 
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              
-              <label class="btn btn-outline-success btn-lg mx-2 mx-sm-4 active rounded">
-                <input type="radio" name="options" id="Movies" autocomplete="off" onclick="setCat(this.id)" checked> Movies
-              </label>
+    
 
-              <label class="btn btn-outline-success btn-lg mx-2 mx-sm-4 rounded">
-                <input type="radio" name="options" id="All" autocomplete="off" onclick="setCat(this.id)" > ALL
-              </label>
-              
-              <label class="btn btn-outline-success btn-lg mx-2 mx-sm-4 rounded">
-                <input type="radio" name="options" id="TV" autocomplete="off" onclick="setCat(this.id)"> Shows
-              </label>
-            </div>
-
-        </div>
-
-        <div class=" " id="outerdiv">
-          <div class="d-flex flex-wrap justify-content-around">
-            <img src="./1.gif" alt="tenor-2" border="0">
-          </div>
-        </div>
-
-
-  <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header d-flex justify-content-end">
-          <button type="button" class="btn btn-outline-danger" id="pause" data-dismiss="modal" onclick="removePlayer()">Close</button>
-        </div>
-
-        <div class="modal-body " id="player-body">
-
-        </div>
+    <div id="outerdiv" class="gifstyle" >
+      <div class="d-flex flex-wrap justify-content-around center" >
+        <img src="./1.webp" alt="tenor-2" border="0" class="my-auto" >
       </div>
     </div>
+
+
+<i class="fa fa-question-circle fa-4x float" data-toggle="modal" data-target="#exampleModalCenter" aria-hidden="true"></i>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" id="helpdesk">
+      
+      <div class="modal-body" >
+        <div class="container py-5">
+          <!-- For demo purpose -->
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+          </button>
+          <header class="text-center text-white">
+              <h1 class="display-4">Help Desk</h1>
+          </header>
+          
+          
+      
+          <div class="row py-5">
+              <div class="col-lg-7 mx-auto">
+      
+                  
+                  <div class="card shadow mb-4">
+                      <div class="card-body p-3 p-md-5">
+                          <h4 class="mb-4">Features</h4>
+                          <!-- List with bullets -->
+                          <ul class="list-bullets">
+                              <li class="mb-2">Search Torrents</li>
+                              <li class="mb-2">Stream and Download media Torrents</li>
+                           
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  
+                  <div class="card shadow mb-4">
+                      <div class="card-body p-3 p-md-5">
+                          <h4 class="mb-4">Convert Torrents to Direct Link (Easy)</h4>
+                          <!-- List with bullets -->
+                          <ul class="list-bullets">
+                              <li class="mb-2">Go to this&nbsp<a href="https://dash.sonicbit.net/reff?id=92584" target="_blank">Site</a></li>
+                              <li class="mb-2">Make a free account</li>
+                              <li class="mb-2">Copy Magnet Link form the site and paste it there</li>
+                              <li class="mb-2">You will be able to download/stream torrent files at high speed</li>
+                              <li class="mb-2">Free account have a limit of 4GB</li>
+                              <li class="mb-2"><a href="https://telegra.ph/Tutorial-01-07-2" target="_blank">Tutorial</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  
+                  <div class="card shadow mb-4">
+                      <div class="card-body p-3 p-md-5">
+                          <h4 class="mb-4">Torrent to Google Drive Bot (Hard)</h4>
+                          <!-- List with bullets -->
+                          <ul class="list-bullets">
+                              <li class="mb-2">Telegram Required</li>
+
+                              <li class="mb-2"><a href="tg://join?invite=TrFgwiNSw1JEbs2S" target="_blank">Bot1 Link</a>&nbsp;/&nbsp;<a href="https://t.me/torrentbcloud" target="_blank">Bot2 Link</a></li>
+                              
+                              <li class="mb-2"><a href="https://t.hoarding.wtf/0:/Bot%20Upload/" target="_blank">Bot1Drive Link</a>&nbsp;/&nbsp;<a href="https://torrentdrivetd.aryan.workers.dev/0:/" target="_blank">Bot2Drive Link</a></li>
+                              <li class="mb-2">Username: hoarding / torrentdrive</li>
+                              <li class="mb-2">Password: hoarding / aryantd</li>
+                              <li class="mb-2">Search your file in the available 4 Drives</li>
+                          </ul>
+                      </div>
+                  </div>
+
+                  <div class="card shadow mb-4">
+                    <div class="card-body p-3 p-md-5">
+                        <h4 class="mb-4">Block Ads</h4>
+                        <!-- List with bullets -->
+                        <ul class="list-bullets">
+                            <li class="mb-2">Use adblocker to block ads</li>
+                            <li class="mb-2"><a href="https://play.google.com/store/apps/details?id=com.hsv.freeadblockerbrowser" target="_blank">Android</li>
+                            
+                            <li class="mb-2"><a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en-US" target="_blank">Windows</a></li>
+                        </ul>
+                    </div>
+                </div>
+                     
+              </div>
+          </div>
+      </div>
+      
+      </div>
+      
+    </div>
   </div>
-        
-    <script src="https://cdn.jsdelivr.net/npm/@webtor/player-sdk-js/dist/index.min.js" charset="utf-8"></script>
-    
-    
+</div>
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header d-flex justify-content-end">
+      <button type="button" class="btn btn-outline-danger" id="pause" data-dismiss="modal" onclick="removePlayer()">Close</button>
+    </div>
+
+    <div class="modal-body " id="player-body">
+
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
 
     
+<script src="https://cdn.jsdelivr.net/npm/@webtor/player-sdk-js/dist/index.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.3/TweenMax.min.js" charset="utf-8"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MorphSVGPlugin.min.js" charset="utf-8"></script>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
   </body>
 </html>

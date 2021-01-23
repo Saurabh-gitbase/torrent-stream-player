@@ -1,24 +1,45 @@
 let torrents = [];
-let category = "Movies";
+let active = false;
 
-function setCat(e) {
-  category = e;
+function setSuggestions(result) {
+  for (let i = 0; i < 5; i++) {
+    document.getElementById("suggestions").options[i].value = result[i];
+  }
 }
 
-document.getElementById("search").addEventListener("submit", function (event) {
-  event.preventDefault();
-  const name = document.getElementById("searchval").value;
-  loadingScreen();
-  search(name);
-  document.getElementById("searchval").value = "";
-});
+function suggest(q) {
+  if (q.length === 0) {
+    let n = Array(5).fill("");
+    setSuggestions(n);
+    return;
+  }
+  if (active === true) {
+    return;
+  }
+  var myHeaders = new Headers();
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+  active = true;
+  fetch(`https://streamtorrent-demo.herokuapp.com/suggest/${q}`, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      var arr = JSON.parse(result);
+      active = false;
+      if (arr.length === 5) setSuggestions(arr);
+    })
+    .catch((error) => {
+      console.log("error", error);
+    });
+}
 
-async function getMagnet(torrent) {
+async function getMagnet(index, wtype) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  
 
-  var raw = JSON.stringify(torrent);
+  var raw = JSON.stringify(torrents[index]);
 
   var requestOptions = {
     method: "POST",
@@ -29,12 +50,54 @@ async function getMagnet(torrent) {
 
   fetch("https://streamtorrent-demo.herokuapp.com/getMagnet/", requestOptions)
     .then((response) => response.text())
-    .then((response) => player(response))
+    .then((response) => (torrents[index].magnet = response))
+    .then(() =>
+      wtype === "copy"
+        ? copyToClipboard(torrents[index].magnet)
+        : player(torrents[index].magnet)
+    )
     .catch((error) => {
       console.log("error", error);
       errorDiv();
     });
 }
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
+
+const copyToClipboard = (str) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+  Toast.fire({
+    icon: "success",
+    title: "Magnet Copied successfully",
+  });
+};
+
+document.getElementById("search").addEventListener("submit", function (event) {
+  event.preventDefault();
+  const name = document.getElementById("searchval").value;
+  loadingScreen();
+  search(name);
+  document.getElementById("searchval").value = "";
+  suggest("");
+});
 
 const player = (magnet) => {
   const playerDiv = document.createElement("div");
@@ -74,7 +137,14 @@ const player = (magnet) => {
 
 const play = (info) => {
   let index = Number(info.slice(6));
-  getMagnet(torrents[index]);
+  if (torrents[index].magnet === undefined) getMagnet(index, "player");
+  else player(torrents[index].magnet);
+};
+
+const copy = (info) => {
+  let index = Number(info.slice(4));
+  if (torrents[index].magnet === undefined) getMagnet(index, "copy");
+  else copyToClipboard(torrents[index].magnet);
 };
 
 function removePlayer() {
@@ -83,18 +153,16 @@ function removePlayer() {
 
 async function search(name) {
   torrents = [];
-  magnetarr = [];
+
   var myHeaders = new Headers();
-
-  
-
   var requestOptions = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
   };
+
   fetch(
-    `https://streamtorrent-demo.herokuapp.com/search/${category}/${name}`,
+    `https://streamtorrent-demo.herokuapp.com/search/${name}`,
     requestOptions
   )
     .then((response) => response.text())
@@ -130,7 +198,7 @@ var loadCard = (torrentlist) => {
       cardh5.innerHTML = `${torrentlist[i].title}`;
 
       const cardh7 = document.createElement("h7");
-      cardh7.className = "card-subtitle mb-2 text-muted";
+      cardh7.className = "card-subtitle my-2 text-muted";
       cardh7.innerHTML = `${torrentlist[i].time}`;
 
       const cardh3 = document.createElement("h3");
@@ -174,6 +242,15 @@ var loadCard = (torrentlist) => {
       playButton.setAttribute("data-target", "#largeModal");
       playButton.setAttribute("onclick", "play(this.value)");
 
+      const copyButton = document.createElement("button");
+      copyButton.type = "button";
+      copyButton.className = "btn btn-outline-success copy my-2 float-right";
+      copyButton.innerHTML = "Copy";
+
+      copyButton.value = `copy${i}`;
+
+      copyButton.setAttribute("onclick", "copy(this.value)");
+
       cardsWrapper.appendChild(cardh5);
       cardsWrapper.appendChild(cardh7);
       cardsWrapper.appendChild(cardh3);
@@ -184,6 +261,7 @@ var loadCard = (torrentlist) => {
       cardIconDiv.appendChild(linfo);
       cardsWrapper.appendChild(cardIconDiv);
       cardsWrapper.appendChild(playButton);
+      cardsWrapper.appendChild(copyButton);
       cardDetails.appendChild(cardsWrapper);
       cardBox.appendChild(cardDetails);
     }
@@ -206,7 +284,7 @@ function errorDiv() {
   innerh1.className = "error-font";
   innerh1.innerHTML = "404!";
   const image = document.createElement("img");
-  image.src = "./3.gif";
+  image.src = "./3.webp";
   image.alt = "404";
   image.className = "center";
 
@@ -220,10 +298,17 @@ function loadingScreen() {
   const outerdiv = document.getElementById("outerdiv");
   outerdiv.removeChild(outerdiv.firstElementChild);
 
-  const loading = document.createElement("img");
-  loading.src = "./2.gif";
-  loading.alt = "loading GIF";
-  loading.className = "center";
+  const loading = document.createElement("div");
+  loading.className = "loader";
+  const d1 = document.createElement("div");
+  d1.className = "inner one";
+  const d2 = document.createElement("div");
+  d2.className = "inner two";
+  const d3 = document.createElement("div");
+  d3.className = "inner three";
+  loading.appendChild(d1);
+  loading.appendChild(d2);
+  loading.appendChild(d3);
 
   outerdiv.appendChild(loading);
 }
@@ -233,7 +318,7 @@ function homeScreen() {
   outerdiv.removeChild(outerdiv.firstElementChild);
 
   const home = document.createElement("img");
-  home.src = "./1.gif";
+  home.src = "./1.webp";
   home.alt = "home GIF";
   home.className = "center";
 
